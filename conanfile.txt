@@ -1,0 +1,8 @@
+[requires]
+raylib/5.0
+flecs/4.0.0
+catch2/3.7.0
+
+[generators]
+CMakeDeps
+CMakeToolchain
