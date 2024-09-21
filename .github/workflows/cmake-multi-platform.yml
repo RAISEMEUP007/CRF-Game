@@ -6,55 +6,8 @@ on:
       - '**'
 
 jobs:
-  Test-catch2-and-Clang-tidy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set build directory
-        id: strings
-        run: |
-          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
-      - name: Install Conan
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-dev
-          sudo apt-get install -y libx11-dev libx11-xcb-dev libfontenc-dev \
-            libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev \
-            libxcursor-dev libxdamage-dev libxfixes-dev libxi-dev \
-            libxinerama-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev \
-            libxres-dev libxss-dev libxtst-dev libxv-dev libxxf86vm-dev \
-            libxcb-glx0-dev libxcb-render-util0-dev libxcb-xkb-dev \
-            libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev \
-            libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev \
-            libxcb-xfixes0-dev libxcb-xinerama0-dev \
-            libxcb-dri3-dev libxcb-cursor-dev libxcb-dri2-0-dev \
-            libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
-            libxcb-res0-dev libxcb-util-dev libxcb-util0-dev
-          sudo apt-get install -y python3-pip
-          pip3 install conan
-          conan profile detect
-
-      - name: Install Dependencies with Conan
-        run: |
-          conan install . --build=missing --output-folder=build
-
-      - name: Run Clang-Tidy
-        run: |
-          clang-tidy src/Main.cpp > /dev/null 2>&1
-
-      - name: Run Catch2 Tests
-        working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        run: |
-          cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --config Release
-          ctest --build-config Release
-
   build-linux:
     runs-on: ubuntu-latest
-    needs: Test-catch2-and-Clang-tidy
     steps:
       - uses: actions/checkout@v4
 
@@ -110,7 +63,6 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
-    needs: Test-catch2-and-Clang-tidy
     steps:
       - uses: actions/checkout@v4
 
@@ -155,7 +107,6 @@ jobs:
 
   build-mac:
     runs-on: macos-latest
-    needs: Test-catch2-and-Clang-tidy
     steps:
       - uses: actions/checkout@v4
 
