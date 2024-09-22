@@ -363,20 +363,15 @@ void DrawGame() {
                              (int) offset.y + SQUARE_SIZE, lightGrayColor);
                     DrawLine((int) offset.x, (int) offset.y + SQUARE_SIZE, (int) offset.x + SQUARE_SIZE,
                              (int) offset.y + SQUARE_SIZE, lightGrayColor);
-                    offset.x += SQUARE_SIZE;
-                } else if (i[j] == FULL) {
+                } else if (i[j] == FULL)
                     DrawRectangle((int) offset.x, (int) offset.y, SQUARE_SIZE, SQUARE_SIZE, grayColor);
-                    offset.x += SQUARE_SIZE;
-                } else if (i[j] == MOVING) {
+                else if (i[j] == MOVING)
                     DrawRectangle((int) offset.x, (int) offset.y, SQUARE_SIZE, SQUARE_SIZE, darkGrayColor);
-                    offset.x += SQUARE_SIZE;
-                } else if (i[j] == BLOCK) {
+                else if (i[j] == BLOCK)
                     DrawRectangle((int) offset.x, (int) offset.y, SQUARE_SIZE, SQUARE_SIZE, lightGrayColor);
-                    offset.x += SQUARE_SIZE;
-                } else if (i[j] == FADING) {
+                else if (i[j] == FADING)
                     DrawRectangle((int) offset.x, (int) offset.y, SQUARE_SIZE, SQUARE_SIZE, fadingColor);
-                    offset.x += SQUARE_SIZE;
-                }
+                offset.x += SQUARE_SIZE;
             }
 
             offset.x = (float) controller;
