@@ -23,5 +23,5 @@ clang-tidy src/*.cpp -- -IC:\Users\mtaim\.conan2\p\rayliab5c2bc5df219\p\include 
 ## Linux
 
 ```bash
-clang-tidy src/*.cpp -- -I$HOME/.conan2/p/rayliab5c2bc5df219/p/include -I$HOME/.conan2/p/flecsc7a7a62b5e5af/p/include
+clang-tidy src/*.cpp -- -I$HOME/.conan2/p/raylid3c36e0e7a0e2/p/include -I$HOME/.conan2/p/flecsd4ab11213583a/p/include
 ```

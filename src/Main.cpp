@@ -13,11 +13,15 @@
 
 #include "raylib.h"
 #include "flecs.h"
+#include "boost/di.hpp"
+#include "boost/sml.hpp"
+#include "boost/sml/utility/dispatch_table.hpp"
 
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <iostream>
 
 #if defined(PLATFORM_WEB)
 #include <emscripten/emscripten.h>
@@ -27,14 +31,11 @@
 // Some Defines
 //----------------------------------------------------------------------------------
 #define SQUARE_SIZE             20
-
 #define GRID_HORIZONTAL_SIZE    12
 #define GRID_VERTICAL_SIZE      20
-
 #define LATERAL_SPEED           10
 #define TURNING_SPEED           12
 #define FAST_FALL_AWAIT_COUNTER 30
-
 #define FADING_TIME             33
 
 //----------------------------------------------------------------------------------
@@ -92,6 +93,25 @@ Color maroonColor = {128, 0, 0, 255}; // Maroon
 Color whiteColor = {255, 255, 255, 255}; // White
 
 //------------------------------------------------------------------------------------
+// Boost DI Example
+//------------------------------------------------------------------------------------
+struct GameService {
+    static void start() {
+        std::cout << " --- Boost DI Example !!! --- Game service started!" << std::endl;
+    }
+};
+
+class Game {
+    public:
+        explicit Game(GameService& service) : service(service) {
+            GameService::start();
+        }
+
+    private:
+        GameService& service;
+};
+
+//------------------------------------------------------------------------------------
 // Module Functions Declaration (local)
 //------------------------------------------------------------------------------------
 static void InitGame(); // Initialize game
@@ -102,19 +122,12 @@ static void UpdateDrawFrame(); // Update and Draw (one frame)
 
 // Additional module functions
 static bool Createpiece();
-
 static void GetRandompiece();
-
 static void ResolveFallingMovement(bool *detection, bool *pieceActive);
-
 static bool ResolveLateralMovement();
-
 static bool ResolveTurnMovement();
-
 static void CheckDetection(bool *detection);
-
 static void CheckCompletion(bool *lineToDelete);
-
 static int DeleteCompleteLines();
 
 // Define a Position component for Flecs
@@ -132,8 +145,11 @@ static void DrawVelocity(flecs::world &ecs);
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int WinMain()
-{
+#ifdef _WIN32
+int WinMain() {
+#else
+int main() {
+#endif
     // Initialization (Note windowTitle is unused on Android)
     //---------------------------------------------------------
     InitWindow(screenWidth, screenHeight, "classic game: tetris");
@@ -166,6 +182,13 @@ int WinMain()
                 if (pos.y < 0 || pos.y > screenHeight) vel.y = -vel.y;
             });
 
+    // Set up Boost DI
+    auto injector = boost::di::make_injector(
+        boost::di::bind<GameService>().to<GameService>()
+    );
+
+    // Create the Game instance with DI
+    injector.create<Game>();
 
     InitGame();
 

@@ -8,15 +8,31 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Point CMake to the location where Conan generates CMake config files
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}")
 
+# Find required packages
 find_package(raylib REQUIRED)
 find_package(Catch2 3 REQUIRED)
 find_package(flecs REQUIRED)
+find_package(di REQUIRED)
+find_package(sml REQUIRED)
 
+# Source and test files
 set(SOURCE_FILES
-    ./src/Main.cpp)
-set(TEST_FILES
-    test/Test.cpp)
+    ./src/Main.cpp
+    ./src/lib/FloydWarshal.cpp
+)
 
+set(TEST_FILES
+    test/Test.cpp
+    test/lib/FloydWarshalTest.cpp
+    src/lib/FloydWarshal.cpp  # Include implementation for tests
+)
+
+# Include directories
+include_directories(
+    src/lib      # For FloydWarshal.h
+)
+
+#Add executables
 if (WIN32)
   add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
 else()
@@ -25,13 +41,17 @@ endif()
 
 add_executable(node_maze_tests ${TEST_FILES})
 
+# Link libraries
 target_link_libraries(${PROJECT_NAME} raylib)
-target_link_libraries(node_maze_tests Catch2::Catch2WithMain)
 target_link_libraries(${PROJECT_NAME} flecs::flecs_static)
+target_link_libraries(${PROJECT_NAME} di::di)
+target_link_libraries(${PROJECT_NAME} sml::sml)
+target_link_libraries(node_maze_tests Catch2::Catch2WithMain)
 
+# Set output directory for the main executable
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
 
-# Checks if OSX and links appropriate frameworkds (Only reqirued on MacOS)
+# Checks if OSX and links appropriate frameworks (Only required on MacOS)
 if (APPLE)
   target_link_libraries(${PROJECT_NAME} "-framework IOKit")
   target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
@@ -40,4 +60,5 @@ endif()
 
 # Enable testing
 enable_testing()
-add_test(NAME node_maze_tests COMMAND node_maze_tests)
+include(Catch)
+catch_discover_tests(node_maze_tests)
