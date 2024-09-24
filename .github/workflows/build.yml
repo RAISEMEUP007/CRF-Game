@@ -1,5 +1,5 @@
 name: Build and Deploy
-run-name: ${{ contains(github.event.workflow_run.head_branch, 'deploy-to-steam') && 'Build and Deploy to Steam' || 'Build'}} on ${{ github.event.workflow_run.head_branch }} by ${{ github.actor }} `${{ github.event.workflow_run.head_commit.message }}`
+run-name: 🚀 ${{ contains(github.event.workflow_run.head_branch, 'deploy-to-steam') && 'Build and Deploy to Steam' || 'Build'}} on `${{ github.event.workflow_run.head_branch }}` by ${{ github.actor }} 💬 `${{ github.event.workflow_run.head_commit.message }}`
 
 on:
   workflow_run:
