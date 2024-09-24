@@ -132,7 +132,8 @@ static void DrawVelocity(flecs::world &ecs);
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int main() {
+int WinMain()
+{
     // Initialization (Note windowTitle is unused on Android)
     //---------------------------------------------------------
     InitWindow(screenWidth, screenHeight, "classic game: tetris");
