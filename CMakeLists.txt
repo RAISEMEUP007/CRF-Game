@@ -17,7 +17,12 @@ set(SOURCE_FILES
 set(TEST_FILES
     test/Test.cpp)
 
-add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
+if (WIN32)
+  add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
+else()
+  add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
+endif()
+
 add_executable(node_maze_tests ${TEST_FILES})
 
 target_link_libraries(${PROJECT_NAME} raylib)
