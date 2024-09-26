@@ -1,6 +1,6 @@
 // FloydWarshal.cpp
 
-#include "FloydWarshal.h"
+#include "FloydWarshal.hpp"
 
 FloydWarshal::FloydWarshal(unsigned size) : size(size) {
     clean();
@@ -12,6 +12,7 @@ void FloydWarshal::resize(unsigned newSize) {
 }
 
 unsigned FloydWarshal::newKey() {
+    int x;
     return last_key++;
 }
 

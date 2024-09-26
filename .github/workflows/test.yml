@@ -60,7 +60,32 @@ jobs:
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config Release
 
-      - name: Run Clang-Tidy
+      - name: List cpp Files for clang-tidy Analysis in src
         run: |
-          conan --version
-          clang-tidy src/Main.cpp -- -I$HOME/.conan2/p/raylid3c36e0e7a0e2/p/include -I$HOME/.conan2/p/flecsd4ab11213583a/p/include -I$HOME/.conan2/p/dia0f6529019f9b/p/include -I$HOME/.conan2/p/sml3616c12de77ec/p/include
+          find src -name '*.cpp'
+          
+      - name: Run Clang-tidy
+        run: |
+          error_flag=0
+          
+          while IFS= read -r file; do
+            output=$(clang-tidy "$file" -- -isystem "$HOME/.conan2/p/raylid3c36e0e7a0e2/p/include" \
+              -isystem "$HOME/.conan2/p/flecsd4ab11213583a/p/include" \
+              -isystem "$HOME/.conan2/p/dia0f6529019f9b/p/include" \
+              -isystem "$HOME/.conan2/p/sml3616c12de77ec/p/include" 2>&1)
+
+            status=$?
+
+            echo "*************************"
+            echo "$output"
+
+            if [ $status -ne 0 ]; then
+              echo "Error: clang-tidy failed for file: $file"
+              error_flag=1
+            fi
+
+          done < <(find src -name '*.cpp')
+
+          if [ $error_flag -ne 0 ]; then
+            exit 1
+          fi

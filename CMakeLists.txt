@@ -4,6 +4,7 @@ project(node_maze)
 # Use C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Point CMake to the location where Conan generates CMake config files
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}")
@@ -19,12 +20,15 @@ find_package(sml REQUIRED)
 set(SOURCE_FILES
     ./src/Main.cpp
     ./src/lib/FloydWarshal.cpp
+    ./src/lib/QuadTree.cpp
 )
 
 set(TEST_FILES
     test/Test.cpp
     test/lib/FloydWarshalTest.cpp
+    test/lib/QuadTreeTest.cpp
     src/lib/FloydWarshal.cpp  # Include implementation for tests
+    src/lib/QuadTree.cpp      # Include implementation for tests
 )
 
 # Include directories
