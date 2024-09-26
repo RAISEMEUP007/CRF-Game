@@ -1,6 +1,6 @@
-/*******************************************************************************************
+/******************************************************************************************* 
 *
-*   raylib - classic game: tetris 
+*   raylib - classic game: tetris
 *
 *   Sample game developed by Marc Palau and Ramon Santamaria
 *
