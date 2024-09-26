@@ -163,7 +163,7 @@ jobs:
   upload-Steam:
     runs-on: ubuntu-latest
     needs: [build-linux, build-windows, build-mac]
-    if: github.event.workflow_run.head_branch == 'deploy-to-steam'
+    # if: github.event.workflow_run.head_branch == 'deploy-to-steam'
     steps:
       - uses: actions/checkout@v2
 
