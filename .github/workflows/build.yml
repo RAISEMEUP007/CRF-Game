@@ -68,6 +68,7 @@ jobs:
           path: ${{ github.workspace }}/_builds
 
   build-windows:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -112,6 +113,7 @@ jobs:
           path: ${{ github.workspace }}/_builds
 
   build-mac:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
