@@ -37,11 +37,11 @@ include_directories(
 )
 
 #Add executables
-if (WIN32)
-  add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
-else()
+# if (WIN32)
+#   add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
+# else()
   add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
-endif()
+# endif()
 
 add_executable(node_maze_tests ${TEST_FILES})
 
