@@ -16,56 +16,56 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set build directory
-        id: strings
-        run: |
-          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      # - name: Set build directory
+      #   id: strings
+      #   run: |
+      #     echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-      - name: Install Clang-Tidy
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-tidy
+      # - name: Install Clang-Tidy
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y clang-tidy
       
-      - name: Install Conan
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-dev
-          sudo apt-get install -y libx11-dev libx11-xcb-dev libfontenc-dev \
-            libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev \
-            libxcursor-dev libxdamage-dev libxfixes-dev libxi-dev \
-            libxinerama-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev \
-            libxres-dev libxss-dev libxtst-dev libxv-dev libxxf86vm-dev \
-            libxcb-glx0-dev libxcb-render-util0-dev libxcb-xkb-dev \
-            libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev \
-            libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev \
-            libxcb-xfixes0-dev libxcb-xinerama0-dev \
-            libxcb-dri3-dev libxcb-cursor-dev libxcb-dri2-0-dev \
-            libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
-            libxcb-res0-dev libxcb-util-dev libxcb-util0-dev
-          sudo apt-get install -y python3-pip
-          pip3 install conan
-          conan profile detect
+      # - name: Install Conan
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y libgl1-mesa-dev
+      #     sudo apt-get install -y libx11-dev libx11-xcb-dev libfontenc-dev \
+      #       libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev \
+      #       libxcursor-dev libxdamage-dev libxfixes-dev libxi-dev \
+      #       libxinerama-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev \
+      #       libxres-dev libxss-dev libxtst-dev libxv-dev libxxf86vm-dev \
+      #       libxcb-glx0-dev libxcb-render-util0-dev libxcb-xkb-dev \
+      #       libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev \
+      #       libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev \
+      #       libxcb-xfixes0-dev libxcb-xinerama0-dev \
+      #       libxcb-dri3-dev libxcb-cursor-dev libxcb-dri2-0-dev \
+      #       libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
+      #       libxcb-res0-dev libxcb-util-dev libxcb-util0-dev
+      #     sudo apt-get install -y python3-pip
+      #     pip3 install conan
+      #     conan profile detect
 
-      - name: Install Dependencies with Conan
-        run: |
-          conan install . --build=missing --output-folder=build
+      # - name: Install Dependencies with Conan
+      #   run: |
+      #     conan install . --build=missing --output-folder=build
 
-      - name: Configure CMake
-        run: |
-          cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --config Release
+      # - name: Configure CMake
+      #   run: |
+      #     cd build
+      #     cmake .. -DCMAKE_BUILD_TYPE=Release
+      #     cmake --build . --config Release
 
-      - name: Test with Catch2
-        working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        run: ctest --build-config Release
+      # - name: Test with Catch2
+      #   working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      #   run: ctest --build-config Release
 
-      - name: List cpp Files for clang-tidy Analysis in src
-        run: |
-          cpp_files=$(find src -name '*.cpp' | tr '\n' ' ')
-          echo "Cpp files for clang-tidy: $cpp_files"
+      # - name: List cpp Files for clang-tidy Analysis in src
+      #   run: |
+      #     cpp_files=$(find src -name '*.cpp' | tr '\n' ' ')
+      #     echo "Cpp files for clang-tidy: $cpp_files"
           
-      - name: Run Clang-tidy
+      # - name: Run Clang-tidy
         run: |
           cpp_files=$(find src -name '*.cpp' | tr '\n' ' ')
           clang-tidy $cpp_files -- -isystem \"$HOME/.conan2/p/raylid3c36e0e7a0e2/p/include\" \

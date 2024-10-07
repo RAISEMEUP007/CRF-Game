@@ -59,6 +59,7 @@ jobs:
       - name: Copy Build Files
         run: |
           mkdir -p ${{ github.workspace }}/_builds/linux/
+          ls ${{ github.workspace }}/bin/
           cp ${{ github.workspace }}/bin/* ${{ github.workspace }}/_builds/linux/
 
       - name: Upload Linux Build Files
