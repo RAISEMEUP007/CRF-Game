@@ -54,8 +54,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMA
 # Copy the resource directory to the build directory after building the main executable
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/resource/
-        ${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource
+        $<$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>:${CMAKE_CURRENT_SOURCE_DIR}/resource/>
+        $<$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>:${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource>
+        $<$<NOT:$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>>:${CMAKE_BINARY_DIR}/../bin/resource/>
     COMMENT "Copying resource directory to build directory"
 )
 
