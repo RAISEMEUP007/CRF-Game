@@ -51,12 +51,20 @@ target_link_libraries(node_maze_tests Catch2::Catch2WithMain)
 # Set output directory for the main executable
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
 
-# Copy the resource directory to the build directory after building the main executable
+# Define the source and destination paths based on the platform
+set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resource/)
+set(RESOURCE_DEST_DIR "")
+
+if(WIN32)
+    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource)
+else()
+    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/resource)
+endif()
+
+# Add the custom command to copy the resource directory after the target is built
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        $<$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>:${CMAKE_CURRENT_SOURCE_DIR}/resource/>
-        $<$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>:${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource>
-        $<$<NOT:$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>>:${CMAKE_BINARY_DIR}/../bin/resource/>
+        ${RESOURCE_DIR} ${RESOURCE_DEST_DIR}
     COMMENT "Copying resource directory to build directory"
 )
 
