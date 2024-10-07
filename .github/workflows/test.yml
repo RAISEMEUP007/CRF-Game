@@ -16,10 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: Set build directory
-      #   id: strings
-      #   run: |
-      #     echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      - name: Set build directory
+        id: strings
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
       # - name: Install Clang-Tidy
       #   run: |
