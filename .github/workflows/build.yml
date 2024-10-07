@@ -59,7 +59,7 @@ jobs:
       - name: Copy Build Files
         run: |
           mkdir -p ${{ github.workspace }}/_builds/linux/
-          cp ${{ github.workspace }}/bin/node_maze ${{ github.workspace }}/_builds/linux/
+          cp ${{ github.workspace }}/bin ${{ github.workspace }}/_builds/linux/
 
       - name: Upload Linux Build Files
         uses: actions/upload-artifact@v4
@@ -104,7 +104,7 @@ jobs:
       - name: Copy Build Files
         run: |
           mkdir -p ${{ github.workspace }}/_builds/win/
-          cp ${{ github.workspace }}/bin/Release/node_maze.exe ${{ github.workspace }}/_builds/win/
+          cp ${{ github.workspace }}/bin/Release ${{ github.workspace }}/_builds/win/
 
       - name: Upload Windows Build Files
         uses: actions/upload-artifact@v4
@@ -152,7 +152,7 @@ jobs:
       - name: Copy Build Files
         run: |
           mkdir -p ${{ github.workspace }}/_builds/mac/
-          cp ${{ github.workspace }}/bin/node_maze ${{ github.workspace }}/_builds/mac/
+          cp ${{ github.workspace }}/bin ${{ github.workspace }}/_builds/mac/
 
       - name: Upload Mac Build Files
         uses: actions/upload-artifact@v4
