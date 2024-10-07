@@ -4,7 +4,6 @@ project(node_maze)
 # Use C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Point CMake to the location where Conan generates CMake config files
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}")
@@ -20,15 +19,12 @@ find_package(sml REQUIRED)
 set(SOURCE_FILES
     ./src/Main.cpp
     ./src/lib/FloydWarshal.cpp
-    ./src/lib/QuadTree.cpp
 )
 
 set(TEST_FILES
     test/Test.cpp
     test/lib/FloydWarshalTest.cpp
-    test/lib/QuadTreeTest.cpp
     src/lib/FloydWarshal.cpp  # Include implementation for tests
-    src/lib/QuadTree.cpp      # Include implementation for tests
 )
 
 # Include directories
@@ -37,11 +33,11 @@ include_directories(
 )
 
 #Add executables
-# if (WIN32)
-#   add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
-# else()
+if (WIN32)
+  add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
+else()
   add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
-# endif()
+endif()
 
 add_executable(node_maze_tests ${TEST_FILES})
 
@@ -54,6 +50,14 @@ target_link_libraries(node_maze_tests Catch2::Catch2WithMain)
 
 # Set output directory for the main executable
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
+
+# Copy the resource directory to the build directory after building the main executable
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/resource/
+        ${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource
+    COMMENT "Copying resource directory to build directory"
+)
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)
 if (APPLE)
