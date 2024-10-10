@@ -81,13 +81,13 @@ if (APPLE)
         MACOSX_BUNDLE_ICON_FILE "${MACOSX_BUNDLE_ICON_FILE}"
     )
     
-    # Copy the icon to the resources directory after build (if needed)
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${app_icon_macos}
-            "${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/Resources/node_maze.icns"
-        COMMENT "Copying application icon to build directory"
-    )
+    # # Copy the icon to the resources directory after build (if needed)
+    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    #     COMMAND ${CMAKE_COMMAND} -E copy
+    #         ${app_icon_macos}
+    #         "${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/Resources/node_maze.icns"
+    #     COMMENT "Copying application icon to build directory"
+    # )
 
     target_link_libraries(${PROJECT_NAME} "-framework IOKit")
     target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
