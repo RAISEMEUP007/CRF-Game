@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
+
 project(node_maze)
 
 # Use C++ standard
@@ -29,14 +30,14 @@ set(TEST_FILES
 
 # Include directories
 include_directories(
-    src/lib      # For FloydWarshal.h
+    src/lib  # For FloydWarshal.h
 )
 
-#Add executables
+# Add executables
 if (WIN32)
-  add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
 else()
-  add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
+    add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
 endif()
 
 add_executable(node_maze_tests ${TEST_FILES})
@@ -70,9 +71,27 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)
 if (APPLE)
-  target_link_libraries(${PROJECT_NAME} "-framework IOKit")
-  target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
-  target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
+    set(MACOSX_BUNDLE_ICON_FILE "node_maze.icns")
+    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/resource/node_maze.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+
+    # Adjust the add_executable command for the macOS bundle
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_ICON_FILE "${MACOSX_BUNDLE_ICON_FILE}"
+    )
+    
+    # Copy the icon to the resources directory after build (if needed)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${app_icon_macos}
+            "${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/Resources/node_maze.icns"
+        COMMENT "Copying application icon to build directory"
+    )
+
+    target_link_libraries(${PROJECT_NAME} "-framework IOKit")
+    target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
+    target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
 endif()
 
 # Enable testing
