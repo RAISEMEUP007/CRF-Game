@@ -46,9 +46,9 @@ include_directories(
 
 #Add executables
 if (WIN32)
-  add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
+  add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resources/resource.rc)
 else()
-  add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
+  add_executable(${PROJECT_NAME} ${SOURCE_FILES} resources/resource.rc)
 endif()
 
 add_executable(node_maze_tests ${TEST_FILES})
@@ -68,13 +68,13 @@ target_link_libraries(node_maze_tests flecs::flecs_static)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
 
 # Define the source and destination paths based on the platform
-set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resource/)
+set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources/)
 set(RESOURCE_DEST_DIR "")
 
 if(WIN32)
-    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource)
+    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resources)
 else()
-    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/resource)
+    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/resources)
 endif()
 
 # Add the custom command to copy the resource directory after the target is built
