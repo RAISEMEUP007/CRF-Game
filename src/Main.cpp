@@ -80,8 +80,9 @@ int main() {
     // Initialization
     //--------------------------------------------------------------------------------------
 
-
+    Image image = LoadImage("resources/icon.png");
     InitWindow(screenWidth, screenHeight, "Simple Raylib Game");
+    SetWindowIcon(image);
 
     renderer.LoadTextures({
         {CHARACTERS, "resources/characters.png"},
