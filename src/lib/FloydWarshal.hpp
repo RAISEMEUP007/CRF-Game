@@ -1,4 +1,4 @@
-// FloydWarshal.h
+// FloydWarshal.hpp
 
 #ifndef FLOYDWARSHAL_H
 #define FLOYDWARSHAL_H

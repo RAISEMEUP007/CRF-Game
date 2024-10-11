@@ -1,6 +1,6 @@
 // FloydWarshal.cpp
 
-#include "FloydWarshal.h"
+#include "FloydWarshal.hpp"
 
 FloydWarshal::FloydWarshal(unsigned size) : size(size) {
     clean();

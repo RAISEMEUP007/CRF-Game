@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.24)
-
 project(node_maze)
 
 # Use C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Point CMake to the location where Conan generates CMake config files
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}")
@@ -14,30 +14,41 @@ find_package(raylib REQUIRED)
 find_package(Catch2 3 REQUIRED)
 find_package(flecs REQUIRED)
 find_package(di REQUIRED)
+find_package(nlohmann_json 3.11.3 REQUIRED)
 find_package(sml REQUIRED)
 
 # Source and test files
 set(SOURCE_FILES
     ./src/Main.cpp
+    ./src/Components.hpp
+    ./src/interfaces/IExecutes.hpp
     ./src/lib/FloydWarshal.cpp
+    ./src/lib/QuadTree.cpp
+    ./src/lib/Renderer.cpp
 )
 
 set(TEST_FILES
     test/Test.cpp
     test/lib/FloydWarshalTest.cpp
+    test/lib/QuadTreeTest.cpp
+    test/lib/RendererTest.cpp
+
     src/lib/FloydWarshal.cpp  # Include implementation for tests
+    src/lib/QuadTree.cpp      # Include implementation for tests
+    src/lib/Renderer.cpp      # Include implementation for tests
 )
 
 # Include directories
 include_directories(
-    src/lib  # For FloydWarshal.h
+    src/lib      # For FloydWarshal.h
+    src/interfaces # For IExecutes.hpp
 )
 
-# Add executables
+#Add executables
 if (WIN32)
-    add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
+  add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES} resource/resource.rc)
 else()
-    add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
+  add_executable(${PROJECT_NAME} ${SOURCE_FILES} resource/resource.rc)
 endif()
 
 add_executable(node_maze_tests ${TEST_FILES})
@@ -47,7 +58,11 @@ target_link_libraries(${PROJECT_NAME} raylib)
 target_link_libraries(${PROJECT_NAME} flecs::flecs_static)
 target_link_libraries(${PROJECT_NAME} di::di)
 target_link_libraries(${PROJECT_NAME} sml::sml)
+target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
 target_link_libraries(node_maze_tests Catch2::Catch2WithMain)
+target_link_libraries(node_maze_tests raylib)
+target_link_libraries(node_maze_tests nlohmann_json::nlohmann_json)
+target_link_libraries(node_maze_tests flecs::flecs_static)
 
 # Set output directory for the main executable
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
@@ -71,27 +86,9 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)
 if (APPLE)
-    set(MACOSX_BUNDLE_ICON_FILE "node_maze.icns")
-    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/resource/node_maze.icns")
-    set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-
-    # Adjust the add_executable command for the macOS bundle
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_ICON_FILE "${MACOSX_BUNDLE_ICON_FILE}"
-    )
-    
-    # # Copy the icon to the resources directory after build (if needed)
-    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    #     COMMAND ${CMAKE_COMMAND} -E copy
-    #         ${app_icon_macos}
-    #         "${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/Resources/node_maze.icns"
-    #     COMMENT "Copying application icon to build directory"
-    # )
-
-    target_link_libraries(${PROJECT_NAME} "-framework IOKit")
-    target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
-    target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
+  target_link_libraries(${PROJECT_NAME} "-framework IOKit")
+  target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
+  target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
 endif()
 
 # Enable testing

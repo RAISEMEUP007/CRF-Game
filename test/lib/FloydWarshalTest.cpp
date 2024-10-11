@@ -2,7 +2,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include <catch2/catch_all.hpp>
-#include "FloydWarshal.h"
+#include "FloydWarshal.hpp"
 
 TEST_CASE("Floyd-Warshall generates a connection between two points", "[generate_connection]") {
     FloydWarshal fw(3);

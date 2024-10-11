@@ -152,7 +152,7 @@ int main() {
 #endif
     // Initialization (Note windowTitle is unused on Android)
     //---------------------------------------------------------
-    Image image = LoadImage("resource/icon.icns");
+    Image image = LoadImage("resource/icon.png");
     InitWindow(screenWidth, screenHeight, "classic game: tetris");
     SetWindowIcon(image);
 

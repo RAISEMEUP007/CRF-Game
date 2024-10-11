@@ -4,6 +4,7 @@ flecs/4.0.0
 catch2/3.7.0
 di/1.3.0
 sml/1.1.11
+nlohmann_json/3.11.3
 
 [generators]
 CMakeDeps
