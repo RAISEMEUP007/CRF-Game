@@ -67,22 +67,22 @@ target_link_libraries(node_maze_tests flecs::flecs_static)
 # Set output directory for the main executable
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
 
-# Define the source and destination paths based on the platform
-set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resource/)
-set(RESOURCE_DEST_DIR "")
+# # Define the source and destination paths based on the platform
+# set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resource/)
+# set(RESOURCE_DEST_DIR "")
 
-if(WIN32)
-    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource)
-else()
-    set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/resource)
-endif()
+# if(WIN32)
+#     set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}/resource)
+# else()
+#     set(RESOURCE_DEST_DIR ${CMAKE_BINARY_DIR}/../bin/resource)
+# endif()
 
-# Add the custom command to copy the resource directory after the target is built
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${RESOURCE_DIR} ${RESOURCE_DEST_DIR}
-    COMMENT "Copying resource directory to build directory"
-)
+# # Add the custom command to copy the resource directory after the target is built
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#         ${RESOURCE_DIR} ${RESOURCE_DEST_DIR}
+#     COMMENT "Copying resource directory to build directory"
+# )
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)
 if (APPLE)
